@@ -63,7 +63,7 @@ def ciyun():
                           mask=mask,
                           contour_width=4,
                           contour_color='white',
-                          font_path="msyh.ttf"
+                          font_path="SourceHanSansCN-Medium.ttf"
                           ).generate(txt)
     wordcloud.to_file('bg_词云图.png')
 
