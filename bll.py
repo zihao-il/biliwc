@@ -5,7 +5,10 @@ import numpy as np
 import requests
 from PIL import Image
 from bs4 import BeautifulSoup
+from colorama import init, Fore
 from wordcloud import WordCloud
+
+init(autoreset=True)
 
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36",
@@ -35,7 +38,7 @@ def get_dm(cid):
     for dm in d_list:
         with open("word.txt", "a+", encoding="utf-8-sig") as f:
             f.write(f"{dm.text}\n")
-    return "弹幕获取成功！！！"
+    return Fore.BLUE + "弹幕获取成功！！！"
 
 
 def random_color_func(word=None, font_size=None, position=None, orientation=None, font_path=None, random_state=None):
@@ -52,19 +55,19 @@ def ciyun():
     txt = ''.join(words)
     mask = np.array(Image.open("bg.png"))
 
-
-    wordcloud = WordCloud(background_color="black",
-                          width=2048,
-                          height=2048,
-                          max_words=300,
-                          min_font_size=10,
-                          max_font_size=120,
-                          color_func=random_color_func,
-                          mask=mask,
-                          contour_width=4,
-                          contour_color='white',
-                          font_path="SourceHanSansCN-Medium.ttf"
-                          ).generate(txt)
+    wordcloud = WordCloud(
+        background_color="black",
+        width=2048,
+        height=2048,
+        max_words=300,
+        min_font_size=10,
+        max_font_size=120,
+        color_func=random_color_func,
+        mask=mask,
+        contour_width=4,
+        contour_color='white',
+        font_path="SourceHanSansCN-Medium.ttf"
+    ).generate(txt)
     wordcloud.to_file('bg_词云图.png')
 
 
@@ -73,6 +76,8 @@ if __name__ == "__main__":
         cid = get_cid()
         print(get_dm(cid))
         ciyun()
-        print("制作完成！！！")
+        print(Fore.GREEN + "制作完成！！！\n")
+        input("请按任意键退出...")
     except:
-        print("BV号不存在！！！")
+        print(Fore.RED + "BV号不存在！！！\n")
+        input("请按任意键退出...")
