@@ -57,7 +57,7 @@ def random_color_func(word=None, font_size=None, position=None, orientation=None
     h = randint(60, 300)
     s = int(100.0 * 255.0 / 255.0)
     l = int(100.0 * float(randint(30, 300)) / 255.0)
-    return "hsl({}, {}%, {}%)".format(h, s, l)
+    return f"hsl({h}, {s}%, {l}%)"
 
 
 def ciyun():
