@@ -26,8 +26,6 @@ def get_cid():
     bv_json = requests.get(f"https://api.bilibili.com/x/player/pagelist?bvid={get_bv}&jsonp=jsonp",
                            headers=headers, timeout=3).json()
     # print(bv_json)
-    global cid
-    cid = ""
     if bv_json["code"] == 0:
         cid = bv_json["data"][0]["cid"]
         print(Fore.RED + f'爬取的视频标题为：\"{bv_json["data"][0]["part"]}\"(y or n)？')
