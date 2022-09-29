@@ -32,7 +32,7 @@ def get_cid():
         cid = bv_json["data"][0]["cid"]
         print(Fore.RED + f'爬取的视频标题为：\"{bv_json["data"][0]["part"]}\"(y or n)？')
         yn = input()
-        if yn == "y":
+        if yn == "y" or yn == "Y":
             # print(cid)
             return cid
         else:
@@ -47,10 +47,12 @@ def get_dm(cid):
     xhtml = BeautifulSoup(dm_text.text, features="xml")
     # print(xhtml.prettify())
     d_list = xhtml.find_all("d")
+    dm_count = 0
     for dm in d_list:
+        dm_count += 1
         with open("word.txt", "a+", encoding="utf-8-sig") as f:
             f.write(f"{dm.text}\n")
-    return Fore.BLUE + "弹幕获取成功！！！"
+    return Fore.BLUE + "弹幕获取成功，共获取" + Fore.RED + f"{dm_count}" + Fore.BLUE + "行！！！"
 
 
 def random_color_func(word=None, font_size=None, position=None, orientation=None, font_path=None, random_state=None):
@@ -65,7 +67,13 @@ def ciyun():
         txt = t.read()
     words = jieba.lcut(txt)
     txt = ''.join(words)
-    mask = np.array(Image.open("bg.png"))
+    try:
+        mask = np.array(Image.open("bg.png"))
+    except:
+        print(Fore.RED + '寻找不到"bg.png"文件，已为你自动生成.')
+        image = Image.new('RGB', (2048, 2048), (0, 0, 0))
+        image.save('bg.png')
+        mask = np.array(Image.open("bg.png"))
 
     wordcloud = WordCloud(
         background_color="black",
@@ -95,5 +103,3 @@ if __name__ == "__main__":
     else:
         print(m_cid)
         input("请按任意键退出...")
-
-
