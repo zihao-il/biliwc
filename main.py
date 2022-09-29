@@ -29,8 +29,8 @@ def get_cid():
     if bv_json["code"] == 0:
         cid = bv_json["data"][0]["cid"]
         print(Fore.RED + f'爬取的视频标题为：\"{bv_json["data"][0]["part"]}\"(y or n)？')
-        yn = input()
-        if yn == "y" or yn == "Y":
+        yn = input().lower()
+        if yn == "y" or yn == "yes":
             # print(cid)
             return cid
         else:
