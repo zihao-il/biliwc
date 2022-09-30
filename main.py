@@ -1,3 +1,4 @@
+import os
 from random import randint
 
 import jieba
@@ -60,7 +61,7 @@ def random_color_func(word=None, font_size=None, position=None, orientation=None
     return f"hsl({h}, {s}%, {l}%)"
 
 
-def ciyun(pho_name: str = "bg.png"):
+def ciyun(pho_name: str = "bg.png", c_ttf: str = "SourceHanSansCN-Medium.ttf"):
     with open("word.txt", "r", encoding="utf-8-sig") as t:
         txt = t.read()
     words = jieba.lcut(txt)
@@ -73,6 +74,12 @@ def ciyun(pho_name: str = "bg.png"):
         image.save(pho_name)
         mask = np.array(Image.open(pho_name))
 
+    if os.path.exists(c_ttf):
+        c_ttf = c_ttf
+    else:
+        print(Fore.RED + "未检测到字体文件，默认使用微软雅黑！")
+        c_ttf = r"C:\Windows\Fonts\msyh.ttc"
+
     wordcloud = WordCloud(
         background_color="black",
         width=2048,
@@ -84,7 +91,7 @@ def ciyun(pho_name: str = "bg.png"):
         mask=mask,
         contour_width=4,
         contour_color='white',
-        font_path="SourceHanSansCN-Medium.ttf"
+        font_path=c_ttf
     ).generate(txt)
     wordcloud.to_file(f'词云图_{pho_name}')
 
@@ -95,7 +102,7 @@ if __name__ == "__main__":
 
     if str(m_cid).isdigit():
         print(get_dm(m_cid))
-        ciyun()
+        ciyun("bg.png", "SourceHanSansCN-Medium.ttf")
         print(Fore.GREEN + "制作完成！！！\n")
         input("请按任意键退出...")
     else:
