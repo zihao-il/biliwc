@@ -60,18 +60,18 @@ def random_color_func(word=None, font_size=None, position=None, orientation=None
     return f"hsl({h}, {s}%, {l}%)"
 
 
-def ciyun():
+def ciyun(pho_name: str = "bg.png"):
     with open("word.txt", "r", encoding="utf-8-sig") as t:
         txt = t.read()
     words = jieba.lcut(txt)
     txt = ''.join(words)
     try:
-        mask = np.array(Image.open("bg.png"))
+        mask = np.array(Image.open(pho_name))
     except:
-        print(Fore.RED + '寻找不到"bg.png"文件，已为你自动生成.')
+        print(Fore.RED + f'寻找不到"{pho_name}"文件，已为你自动生成.')
         image = Image.new('RGB', (2048, 2048), (0, 0, 0))
-        image.save('bg.png')
-        mask = np.array(Image.open("bg.png"))
+        image.save(pho_name)
+        mask = np.array(Image.open(pho_name))
 
     wordcloud = WordCloud(
         background_color="black",
@@ -86,7 +86,7 @@ def ciyun():
         contour_color='white',
         font_path="SourceHanSansCN-Medium.ttf"
     ).generate(txt)
-    wordcloud.to_file('bg_词云图.png')
+    wordcloud.to_file(f'词云图_{pho_name}')
 
 
 if __name__ == "__main__":
