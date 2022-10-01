@@ -1,3 +1,4 @@
+import glob
 import os
 from random import randint
 
@@ -6,7 +7,7 @@ import numpy as np
 import requests
 from PIL import Image
 from bs4 import BeautifulSoup
-from colorama import init, Fore
+from colorama import init, Fore, Style
 from wordcloud import WordCloud
 
 init(autoreset=True)
@@ -61,7 +62,30 @@ def random_color_func(word=None, font_size=None, position=None, orientation=None
     return f"hsl({h}, {s}%, {l}%)"
 
 
-def ciyun(pho_name: str = "bg.png", c_ttf: str = "SourceHanSansCN-Medium.ttf"):
+def get_ttf():
+    ttf_list = glob.glob(os.path.join('*.ttf'))
+    if not ttf_list:
+        print(Fore.RED + "未检测到字体文件，默认使用微软雅黑！")
+        c_ttf = r"C:\Windows\Fonts\msyh.ttc"
+    elif len(ttf_list) == 1:
+        print(Fore.RED + f'检测到一个字体文件"{ttf_list[0]}"已为你使用！')
+        c_ttf = ttf_list[0]
+    else:
+        t_num = 0
+        print("检测到多个字体文件，请选择你要用的字体序号：")
+        for t in ttf_list:
+            t_num += 1
+            print(Style.BRIGHT + Fore.RED + f'{t_num}' + Fore.WHITE + ':' + Fore.GREEN + f'{t}')
+        try:
+            t_list = int(input())
+            c_ttf = ttf_list[t_list - 1]
+        except:
+            print(Fore.RED + "输入错误，请重新输入！")
+            return get_ttf()
+    return c_ttf
+
+
+def ciyun(pho_name: str = "bg.png", c_ttf: str = r"C:\Windows\Fonts\msyh.ttc"):
     with open("word.txt", "r", encoding="utf-8-sig") as t:
         txt = t.read()
     words = jieba.lcut(txt)
@@ -73,12 +97,6 @@ def ciyun(pho_name: str = "bg.png", c_ttf: str = "SourceHanSansCN-Medium.ttf"):
         image = Image.new('RGB', (2048, 2048), (0, 0, 0))
         image.save(pho_name)
         mask = np.array(Image.open(pho_name))
-
-    if os.path.exists(c_ttf):
-        c_ttf = c_ttf
-    else:
-        print(Fore.RED + "未检测到字体文件，默认使用微软雅黑！")
-        c_ttf = r"C:\Windows\Fonts\msyh.ttc"
 
     wordcloud = WordCloud(
         background_color="black",
@@ -102,7 +120,7 @@ if __name__ == "__main__":
 
     if str(m_cid).isdigit():
         print(get_dm(m_cid))
-        ciyun("bg.png", "SourceHanSansCN-Medium.ttf")
+        ciyun("bg.png", get_ttf())
         print(Fore.GREEN + "制作完成！！！\n")
         input("请按任意键退出...")
     else:
