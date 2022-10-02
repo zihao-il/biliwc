@@ -1,5 +1,6 @@
 import glob
 import os
+import time
 from random import randint
 
 import jieba
@@ -111,7 +112,8 @@ def ciyun(pho_name: str = "bg.png", c_ttf: str = r"C:\Windows\Fonts\msyh.ttc"):
         contour_color='white',
         font_path=c_ttf
     ).generate(txt)
-    wordcloud.to_file(f'词云图_{pho_name}')
+    wordcloud.to_file(f'词云图_{time.strftime("%y%m%d%H%M%S", time.gmtime())}_{pho_name}')
+    return Fore.GREEN + "制作完成！！！"
 
 
 if __name__ == "__main__":
@@ -120,9 +122,9 @@ if __name__ == "__main__":
 
     if str(m_cid).isdigit():
         print(get_dm(m_cid))
-        ciyun("bg.png", get_ttf())
-        print(Fore.GREEN + "制作完成！！！\n")
+        print(ciyun("bg.png", get_ttf()))
         input("请按任意键退出...")
     else:
         print(m_cid)
         input("请按任意键退出...")
+
