@@ -94,7 +94,7 @@ def ciyun(pho_name: str = "bg.png", c_ttf: str = r"C:\Windows\Fonts\msyh.ttc"):
     try:
         mask = np.array(Image.open(pho_name))
     except:
-        print(Fore.RED + f'寻找不到"{pho_name}"文件，已为你自动生成.')
+        print(Fore.RED + f'检测不到"{pho_name}"文件，已为你自动生成.')
         image = Image.new('RGB', (2048, 2048), (0, 0, 0))
         image.save(pho_name)
         mask = np.array(Image.open(pho_name))
